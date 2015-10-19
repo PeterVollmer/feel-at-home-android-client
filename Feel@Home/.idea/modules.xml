@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Feel@Home.iml" filepath="$PROJECT_DIR$/Feel@Home.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Feel@Home/Feel@Home-Feel@Home.iml" filepath="$PROJECT_DIR$/Feel@Home/Feel@Home-Feel@Home.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../HoloColorPicker/libary/HoloColorPicker.iml" filepath="$PROJECT_DIR$/../HoloColorPicker/libary/HoloColorPicker.iml" />
+    </modules>
+  </component>
+</project>

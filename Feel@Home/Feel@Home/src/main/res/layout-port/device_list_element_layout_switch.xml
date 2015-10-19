@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:divider="?android:dividerHorizontal"
+            android:showDividers="middle">
+    <TextView
+            android:id="@+id/deviceListElementTextView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:textIsSelectable="false"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="center_vertical"
+            android:background="?android:attr/activatedBackgroundIndicator"
+            android:minHeight="?android:attr/listPreferredItemHeight"
+            />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <Switch
+                android:id="@+id/deviceListElementActiveSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:background="?android:attr/activatedBackgroundIndicator"
+            android:layout_gravity="center"
+            android:gravity="center" />
+    </FrameLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+    <EditText
+            android:layout_width="246dp"
+            android:layout_height="wrap_content"
+            android:text="50 ms"
+            android:id="@+id/effect_config_delay_editText"
+            android:visibility="visible"
+            android:editable="true"
+            android:gravity="center" android:layout_alignLeft="@+id/wheel_effect_config_delay_textView"
+            android:layout_below="@+id/wheel_effect_config_delay_textView"
+            android:layout_alignRight="@+id/wheel_effect_config_delay_textView"/>
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Delay"
+            android:id="@+id/wheel_effect_config_delay_textView"
+            android:minHeight="40dp"
+            android:visibility="visible"
+            android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:gravity="center"/>
+
+</RelativeLayout>
+
+
