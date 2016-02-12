@@ -35,20 +35,24 @@ public class OneColorEffectConfigFragment extends Fragment implements View.OnCli
         if (savedState != null){
             effect = (Effect)savedState.getSerializable(Constants.EFFECT_STRING);
             deviceID = savedState.getString(Constants.DEVICE_ID);
+            extractDataFromEffect();
 
-            if (effect.getConfig() != null) {
-                effectConfig = effect.getConfig();
-                String topColorString = effectConfig.get("Color").toString();
-                if (topColorString.length() > 0) {
-                    try {
-                        this.staticColor = Integer.parseInt(topColorString.substring(1), 16) | 0xFF000000;
-                    } catch (NumberFormatException e) {
+        }
+    }
 
-                    }
+    private void extractDataFromEffect(){
+        if (effect.getConfig() != null) {
+            effectConfig = effect.getConfig();
+            String topColorString = effectConfig.get("Color").toString();
+            if (topColorString.length() > 0) {
+                try {
+                    this.staticColor = Integer.parseInt(topColorString.substring(1), 16) | 0xFF000000;
+                } catch (NumberFormatException e) {
+
                 }
-            } else {
-                effectConfig = new HashMap<>();
             }
+        } else {
+            effectConfig = new HashMap<>();
         }
     }
 
@@ -69,6 +73,8 @@ public class OneColorEffectConfigFragment extends Fragment implements View.OnCli
 
         if(savedInstanceState != null){
             extractStateFromBundle(savedInstanceState);
+        } else {
+            extractDataFromEffect();
         }
         final View view = inflater.inflate(R.layout.static_color_effect_config_layout, container, false);
 

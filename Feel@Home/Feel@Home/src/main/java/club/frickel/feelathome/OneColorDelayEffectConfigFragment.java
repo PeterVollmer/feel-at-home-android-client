@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
 public class OneColorDelayEffectConfigFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private int color = Color.argb(255,255,255,255);
-    private String delay = "50ms";
+    private String delay = "50";
 
     private View colorView;
     private EditText delayTextEdit;
@@ -51,7 +51,7 @@ public class OneColorDelayEffectConfigFragment extends Fragment implements View.
     public OneColorDelayEffectConfigFragment(){}
 
     private void updateState(String delay) {
-        Log.d("SendState","state sent");
+        Log.d("SendState", "state sent");
 
         if (sendStateHandler == null || sendStateHandler.getStatus() == AsyncTask.Status.FINISHED) {
             this.delay = delay;
@@ -79,31 +79,34 @@ public class OneColorDelayEffectConfigFragment extends Fragment implements View.
         if (savedState != null){
             effect = (Effect)savedState.getSerializable(Constants.EFFECT_STRING);
             deviceID = savedState.getString(Constants.DEVICE_ID);
-
-            if (effect.getConfig() != null) {
-                effectConfig = effect.getConfig();
-                String colorString = effectConfig.get("Color").toString();
-
-                if (colorString.length() > 0) {
-                    try {
-                        this.color = Integer.parseInt(colorString.substring(1), 16) | 0xFF000000;
-                    } catch (NumberFormatException e) {
-
-                    }
-                }
-
-                String delayString = effectConfig.get(Constants.DELAY).toString();
-
-                Pattern pattern = Pattern.compile("(-)?(\\d+)");
-                Matcher matcher = pattern.matcher(delayString);
-                if (matcher.find()) {
-                    delay =  matcher.group(0);
-                }
-            } else {
-                effectConfig = new HashMap<>();
-            }
+            extractDataFromEffect();
         }
 
+    }
+
+    private void extractDataFromEffect(){
+        if (effect.getConfig() != null) {
+            effectConfig = effect.getConfig();
+            String colorString = effectConfig.get("Color").toString();
+
+            if (colorString.length() > 0) {
+                try {
+                    this.color = Integer.parseInt(colorString.substring(1), 16) | 0xFF000000;
+                } catch (NumberFormatException e) {
+
+                }
+            }
+
+            String delayString = effectConfig.get(Constants.DELAY).toString();
+
+            Pattern pattern = Pattern.compile("(-)?(\\d+)");
+            Matcher matcher = pattern.matcher(delayString);
+            if (matcher.find()) {
+                delay =  matcher.group(0);
+            }
+        } else {
+            effectConfig = new HashMap<>();
+        }
     }
 
     @Override
@@ -121,6 +124,8 @@ public class OneColorDelayEffectConfigFragment extends Fragment implements View.
         super.onCreateView(inflater, container, savedInstanceState);
         if(savedInstanceState != null){
             extractStateFromBundle(savedInstanceState);
+        } else {
+            extractDataFromEffect();
         }
         final View view = inflater.inflate(R.layout.one_color_delay_effect_config_layout, container, false);
 
