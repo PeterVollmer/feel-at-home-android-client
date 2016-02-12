@@ -15,7 +15,6 @@
  */
 package club.frickel.feelathome;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -73,11 +72,6 @@ public class Settings extends Fragment {
         super.onDestroy();
         sharedPreferences.edit().putString(Constants.SERVER_URL,urlEditText.getText().toString()).apply();
         ((Main)getActivity()).restartApplication();
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
     }
 
     @Override
