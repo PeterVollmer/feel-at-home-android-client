@@ -1,6 +1,5 @@
 package club.frickel.feelathome;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,8 +16,6 @@ import java.util.Map;
  * Time: 2:35 AM
  */
 public class OneColorEffectConfigFragment extends Fragment implements View.OnClickListener {
-    Main main;
-
 
     private int staticColor = 0;
 
@@ -30,47 +27,39 @@ public class OneColorEffectConfigFragment extends Fragment implements View.OnCli
 
     public OneColorEffectConfigFragment(){}
 
-    private void sendState() {
-        if(effectConfig != null){
-            effect.setConfig(effectConfig);
-        }
-        new SendStateHandler(effect, deviceID, main).execute();
-    }
-
-
-    public void updateView() {
-
-        effectConfig = new HashMap<>();
-        if (effect.getConfig() != null) {
-            effectConfig = effect.getConfig();
-            String topColorString = effectConfig.get("Color").toString();
-            if (topColorString.length() > 0) {
-                try {
-                    this.staticColor = Integer.parseInt(topColorString.substring(1), 16) | 0xFF000000;
-                } catch (NumberFormatException e) {
-
-                }
-            }
-        }
+    public void updateOneColorEffectView() {
         staticColorView.setBackgroundColor(staticColor);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        main = (Main) activity;
+    private void extractStateFromBundle (Bundle savedState){
+        if (savedState != null){
+            effect = (Effect)savedState.getSerializable(Constants.EFFECT_STRING);
+            deviceID = savedState.getString(Constants.DEVICE_ID);
 
+            if (effect.getConfig() != null) {
+                effectConfig = effect.getConfig();
+                String topColorString = effectConfig.get("Color").toString();
+                if (topColorString.length() > 0) {
+                    try {
+                        this.staticColor = Integer.parseInt(topColorString.substring(1), 16) | 0xFF000000;
+                    } catch (NumberFormatException e) {
+
+                    }
+                }
+            } else {
+                effectConfig = new HashMap<>();
+            }
+        }
     }
+
 
     @Override
     public void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         if (arguments != null){
-            effect = (Effect)arguments.getSerializable(Constants.EFFECT_STRING);
-            deviceID = arguments.getString(Constants.DEVICE_ID);
+            extractStateFromBundle(arguments);
         }
-        sendState();
     }
 
     @Override
@@ -79,8 +68,7 @@ public class OneColorEffectConfigFragment extends Fragment implements View.OnCli
         super.onCreateView(inflater, container, savedInstanceState);
 
         if(savedInstanceState != null){
-            this.deviceID = savedInstanceState.getString(Constants.DEVICE_ID);
-            this.effect = (Effect)savedInstanceState.getSerializable(Constants.EFFECT_STRING);
+            extractStateFromBundle(savedInstanceState);
         }
         final View view = inflater.inflate(R.layout.static_color_effect_config_layout, container, false);
 
@@ -89,7 +77,7 @@ public class OneColorEffectConfigFragment extends Fragment implements View.OnCli
         View staticColorButton = view.findViewById(R.id.static_color_effect_config_color_button);
         staticColorButton.setOnClickListener(this);
 
-        updateView();
+        updateOneColorEffectView();
 
         return view;
     }
@@ -113,7 +101,7 @@ public class OneColorEffectConfigFragment extends Fragment implements View.OnCli
                 bundle.putString(Constants.DEVICE_ID, deviceID);
                 bundle.putSerializable(Constants.COLOR_PICKABLE,new ColorPickableStatic(effect));
                 colorPickerFragment.setArguments(bundle);
-                main.replaceFragmentAndAddToBackstack(colorPickerFragment);
+                ((Main)getActivity()).replaceFragmentAndAddToBackstack(colorPickerFragment);
                 break;
         }
 
