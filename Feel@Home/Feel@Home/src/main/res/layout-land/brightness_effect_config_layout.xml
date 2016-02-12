@@ -7,9 +7,9 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Brightness"
+            android:text="@string/brightness_effect_config_layout_TextView_Text"
             android:id="@+id/textView"
-            android:layout_gravity="left|center_vertical"/>
+            android:layout_gravity="start|center_vertical"/>
 
     <SeekBar
             android:id="@+id/seekbar"
