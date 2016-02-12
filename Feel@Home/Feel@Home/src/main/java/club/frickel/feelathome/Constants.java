@@ -27,4 +27,7 @@ public class Constants {
     public static final String SHARED_SET_ACTIVE = "sharedSetActive";
     public static final String COLOR_PICKABLE = "colorPickable";
     public static final String BRIGHTNESS = "Brightness";
+    public static final String COOLING = "Cooling";
+    public static final String SPARK = "Spark";
+    public static final String DELAY = "Delay";
 }

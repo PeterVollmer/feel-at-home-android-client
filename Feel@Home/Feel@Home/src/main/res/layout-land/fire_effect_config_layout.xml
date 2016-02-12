@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delay_config_textView_text"
+        android:id="@+id/fire_effect_config_delay_textView"
+        android:minHeight="40dp"
+        android:visibility="visible"
+        android:gravity="center"
+        android:labelFor="@+id/fire_effect_config_delay_editText" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:minHeight="40dp"
+        android:ems="10"
+        android:id="@+id/fire_effect_config_delay_editText"
+        android:gravity="center"
+        android:text="@string/delay_config_editText_text" />
+
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:text="@string/fire_effect_config_cooling_textView_text"
+        android:id="@+id/fire_effect_config_cooling_textView"
+        android:labelFor="@+id/fire_effect_config_cooling_seekbar"/>
+
+    <SeekBar
+        android:id="@+id/fire_effect_config_cooling_seekbar"
+        android:minHeight="40dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="180"
+        android:progress="0" />
+
+    <TextView
+        android:id="@+id/fire_effect_config_cooling_seekbar_display_textview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:text="" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:text="@string/fire_effect_config_spark_textView_text"
+        android:id="@+id/fire_effect_config_spark_textView"
+        android:labelFor="@+id/fire_effect_config_spark_seekbar"/>
+
+    <SeekBar
+        android:id="@+id/fire_effect_config_spark_seekbar"
+        android:minHeight="40dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="150"
+        android:progress="0" />
+
+    <TextView
+        android:id="@+id/fire_effect_config_spark_seekbar_display_textview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:text="" />
+
+</LinearLayout>
+
+
