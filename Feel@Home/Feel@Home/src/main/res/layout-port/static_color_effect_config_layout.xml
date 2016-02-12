@@ -1,38 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <TextView
-            android:layout_width="81dp"
-            android:layout_height="wrap_content"
-            android:text="@string/static_color_effect_config_textview_text"
-            android:id="@+id/static_color_effect_config_textView"
-            android:layout_column="0" android:layout_gravity="center"
-            android:autoText="false" android:minHeight="40dp" android:visibility="visible"
-            android:gravity="center_vertical"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignBottom="@+id/static_color_effect_config_color_button"/>
-    <View android:id="@+id/static_color_effect_config_color" android:layout_width="33dp"
-          android:layout_height="86dp" android:text=""
-          android:clickable="true"
-          android:visibility="visible"
-          android:layout_toLeftOf="@+id/static_color_effect_config_color_button"
-          android:layout_alignTop="@+id/static_color_effect_config_textView"
-          android:layout_toRightOf="@+id/static_color_effect_config_textView"
-          android:layout_alignBottom="@+id/static_color_effect_config_textView"/>
+        android:layout_width="81dp"
+        android:layout_height="wrap_content"
+        android:text="@string/select_color_textview_text"
+        android:id="@+id/static_color_effect_config_textView"
+        android:layout_gravity="center"
+        android:minHeight="40dp"
+        android:visibility="visible"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/static_color_effect_config_color_button"/>
+    <View android:id="@+id/static_color_effect_config_color"
+        android:layout_width="33dp"
+        android:layout_height="86dp"
+        android:clickable="true"
+        android:visibility="visible"
+        android:layout_toStartOf="@+id/static_color_effect_config_color_button"
+        android:layout_alignTop="@+id/static_color_effect_config_textView"
+        android:layout_toEndOf="@+id/static_color_effect_config_textView"
+        android:layout_alignBottom="@+id/static_color_effect_config_textView"/>
     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_color_button_text"
-            android:id="@+id/static_color_effect_config_color_button"
-            android:visibility="visible"
-            android:layout_alignParentTop="true" android:layout_alignParentRight="true"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_color_button_text"
+        android:id="@+id/static_color_effect_config_color_button"
+        android:visibility="visible"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>
-
-
