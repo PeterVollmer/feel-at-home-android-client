@@ -26,7 +26,7 @@
         android:ems="10"
         android:id="@+id/fire_effect_config_delay_editText"
         android:gravity="center"
-        android:text="@string/delay_config_editText_text" />
+        android:text="@string/delay_editText_text" />
 
 
 
