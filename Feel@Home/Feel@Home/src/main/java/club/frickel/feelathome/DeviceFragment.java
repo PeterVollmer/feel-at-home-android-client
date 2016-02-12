@@ -34,11 +34,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DeviceFragment extends ListFragment {
-    Main main;
 
     private String deviceID = null;
     private ObjectMapper mapper;
@@ -68,7 +65,7 @@ public class DeviceFragment extends ListFragment {
 
         protected void onPostExecute(ArrayList<Effect> result) {
             if (result == null) {
-                Toast.makeText(main.getApplicationContext(), "Can't get answer from server! Wrong server?", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Can't get answer from server! Wrong server?", Toast.LENGTH_SHORT).show();
             } else {
                 updateEffectsFragment(result);
             }
@@ -119,6 +116,7 @@ public class DeviceFragment extends ListFragment {
 
     private void onEffectSelected(Effect effect) {
         Fragment effectConfigFragment = null;
+        assert effect.getConfig() != null;
         switch (effect.getName()) {
             case "Wheel":
             case "Wheel2":
@@ -142,28 +140,22 @@ public class DeviceFragment extends ListFragment {
             case "Colorfade":
                 effectConfigFragment = new OneColorDelayEffectConfigFragment();
                 break;
-            case "Heart":
-            case "Clock": {
-                Map<String, Object> effectConfig = new HashMap<>();
-                effect.setConfig(effectConfig);
-                new SendStateHandler(effect, deviceID, main).execute();
+            case "Fire":
+                effectConfigFragment = new FireEffectConfigFragment();
                 break;
-            }
             case "Power": {
-                Map<String, Object> effectConfig = new HashMap<>();
-                effectConfig.put("Power", true);
-                effect.setConfig(effectConfig);
-                new SendStateHandler(effect, deviceID, main).execute();
+                effect.getConfig().put("Power", true);
                 break;
             }
         }
+        new SendStateHandler(effect, deviceID, getActivity()).execute();
 
         if (effectConfigFragment != null) {
             Bundle bundle = new Bundle();
             bundle.putString(Constants.DEVICE_ID, deviceID);
             bundle.putSerializable(Constants.EFFECT_STRING, effect);
             effectConfigFragment.setArguments(bundle);
-            main.replaceFragmentAndAddToBackstack(effectConfigFragment);
+            ((Main)getActivity()).replaceFragmentAndAddToBackstack(effectConfigFragment);
         }
     }
 
@@ -173,13 +165,6 @@ public class DeviceFragment extends ListFragment {
 
         // Create an array adapter for the list view, using the Ipsum headlines array
         setListAdapter(new ArrayAdapter<>(getActivity(), layout, effects));
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        main = (Main) activity;
     }
 
     @Override
