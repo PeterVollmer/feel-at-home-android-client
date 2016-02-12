@@ -60,38 +60,36 @@ public class BrightnessEffectConfigFragment extends Fragment implements SeekBar.
         }
     }
 
+    private void extractStateFromBundle(Bundle savedState){
+        if (savedState != null){
+            effect = (Effect)savedState.getSerializable(Constants.EFFECT_STRING);
+            deviceID = savedState.getString(Constants.DEVICE_ID);
+
+            if (effect.getConfig() != null) {
+                effectConfig = effect.getConfig();
+                brightness = (Integer)effectConfig.get(Constants.BRIGHTNESS);
+            } else {
+                effectConfig = new HashMap<>();
+            }
+        }
+    }
+
     @Override
     public void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         if (arguments != null){
-            effect = (Effect)arguments.getSerializable(Constants.EFFECT_STRING);
-            deviceID = arguments.getString(Constants.DEVICE_ID);
-            effectConfig = new HashMap<>();
-            if (effect.getConfig() != null) {
-                effectConfig = effect.getConfig();
-                brightness = (Integer)effectConfig.get(Constants.BRIGHTNESS);
-            }
+            extractStateFromBundle(getArguments());
         }
-
-        updateState(brightness);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
-        if(savedInstanceState != null){
-            this.deviceID = savedInstanceState.getString(Constants.DEVICE_ID);
-            this.effect = (Effect)savedInstanceState.getSerializable(Constants.EFFECT_STRING);
-            effectConfig = new HashMap<>();
-            if (effect.getConfig() != null) {
-                effectConfig = effect.getConfig();
-                brightness = (Integer)effectConfig.get(Constants.BRIGHTNESS);
-            }
+        if (savedInstanceState != null) {
+            extractStateFromBundle(savedInstanceState);
         }
-
         final View view = inflater.inflate(R.layout.brightness_effect_config_layout, container, false);
 
         seekBar = (SeekBar) view.findViewById(R.id.seekbar);
