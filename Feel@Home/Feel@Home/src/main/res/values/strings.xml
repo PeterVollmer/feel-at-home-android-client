@@ -31,11 +31,12 @@
     <string name="ok">OK</string>
     <string name="error_dialog_title">Error</string>
     <string name="only_one_power_config_textview_text">Power</string>
-    <string name="static_color_effect_config_textview_text">Color</string>
+    <string name="select_color_textview_text">Color</string>
     <string name="select_color_button_text">Select Color</string>
     <string name="power">Active</string>
-    <string name="delay_config_editText_text">50</string>
+    <string name="delay_editText_text">50</string>
     <string name="delay_config_textView_text">Delay (in ms)</string>
     <string name="fire_effect_config_cooling_textView_text">Cooling</string>
     <string name="fire_effect_config_spark_textView_text">spark</string>
+    <string name="brightness_effect_config_layout_TextView_Text">Brightness</string>
 </resources>
