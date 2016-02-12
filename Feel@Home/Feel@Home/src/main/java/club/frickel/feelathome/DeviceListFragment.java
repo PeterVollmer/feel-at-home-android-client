@@ -16,7 +16,6 @@
 package club.frickel.feelathome;
 
 
-import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 
 public class DeviceListFragment extends ListFragment {
-    Main main;
     ObjectMapper mapper;
 
 
@@ -77,7 +75,7 @@ public class DeviceListFragment extends ListFragment {
                                 Switch sw = (Switch) v;
                                 device = (Device) sw.getTag();
                                 device.setActive(sw.isChecked());
-                                new SendActiveHandler(sw.isChecked(), device.getId(), main).execute();
+                                new SendActiveHandler(sw.isChecked(), device.getId(), getActivity()).execute();
                                 break;
                             case R.id.deviceListElementTextView:
                                 TextView textView = (TextView) v;
@@ -86,7 +84,7 @@ public class DeviceListFragment extends ListFragment {
                                 Bundle arguments = new Bundle();
                                 arguments.putString(Constants.DEVICE_ID, device.getId());
                                 deviceFragment.setArguments(arguments);
-                                main.replaceFragmentAndAddToBackstack(deviceFragment);
+                                ((Main)getActivity()).replaceFragmentAndAddToBackstack(deviceFragment);
                                 break;
 
                         }
@@ -144,7 +142,7 @@ public class DeviceListFragment extends ListFragment {
         if (savedInstanceState == null){
             updateDeviceListFragment(new ArrayList<Device>());
         }
-        new PrivateDeviceHandler(main.getApplicationContext()).execute();
+        new PrivateDeviceHandler(getActivity().getApplicationContext()).execute();
 
         return super.onCreateView(inflater,container,savedInstanceState);
 
@@ -153,18 +151,12 @@ public class DeviceListFragment extends ListFragment {
     @Override
     public void onResume(){
         super.onResume();
-        new PrivateDeviceHandler(main.getApplicationContext()).execute();
+        new PrivateDeviceHandler(getActivity().getApplicationContext()).execute();
     }
 
 
     public void updateDeviceListFragment(ArrayList<Device> deviceList) {
-        setListAdapter(new DeviceArrayAdapter(this.main, R.layout.device_list_layout, deviceList));
+        setListAdapter(new DeviceArrayAdapter(getActivity(), R.layout.device_list_layout, deviceList));
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        main = (Main) activity;
-
-    }
 }
