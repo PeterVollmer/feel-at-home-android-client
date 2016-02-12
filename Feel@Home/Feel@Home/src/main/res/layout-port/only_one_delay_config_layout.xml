@@ -7,19 +7,19 @@
 
 
     <EditText
-            android:layout_width="246dp"
-            android:layout_height="wrap_content"
-            android:text="50 ms"
-            android:id="@+id/effect_config_delay_editText"
-            android:visibility="visible"
-            android:editable="true"
-            android:gravity="center" android:layout_alignLeft="@+id/wheel_effect_config_delay_textView"
-            android:layout_below="@+id/wheel_effect_config_delay_textView"
-            android:layout_alignRight="@+id/wheel_effect_config_delay_textView"/>
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
+        android:text="@string/delay_config_editText_text"
+        android:inputType="numberSigned"
+        android:id="@+id/effect_config_delay_editText"
+        android:visibility="visible"
+        android:gravity="center" android:layout_alignLeft="@+id/wheel_effect_config_delay_textView"
+        android:layout_below="@+id/wheel_effect_config_delay_textView"
+        android:layout_alignRight="@+id/wheel_effect_config_delay_textView"/>
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Delay"
+            android:text="@string/delay_config_textView_text"
             android:id="@+id/wheel_effect_config_delay_textView"
             android:minHeight="40dp"
             android:visibility="visible"

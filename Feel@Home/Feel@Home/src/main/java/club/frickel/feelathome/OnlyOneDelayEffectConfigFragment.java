@@ -15,7 +15,6 @@
  */
 package club.frickel.feelathome;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,12 +26,13 @@ import android.widget.EditText;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class OnlyOneDelayEffectConfigFragment extends Fragment implements TextWatcher {
-    Main main;
 
-    private String delay = "50 ms";
+    private String delay = "50";
 
     private EditText delayTextEdit;
 
@@ -46,7 +46,7 @@ public class OnlyOneDelayEffectConfigFragment extends Fragment implements TextWa
         if (effectConfig != null){
             effect.setConfig(effectConfig);
         }
-        new SendStateHandler(effect, deviceID, main).execute();
+        new SendStateHandler(effect, deviceID, getActivity()).execute();
     }
 
     private void updateOneDelayEffectView() {
@@ -54,18 +54,17 @@ public class OnlyOneDelayEffectConfigFragment extends Fragment implements TextWa
         effectConfig = new HashMap<>();
         if (effect.getConfig() != null) {
             effectConfig = effect.getConfig();
-            delay = effectConfig.get("Delay").toString();
-
+            String delayString = effectConfig.get("Delay").toString();
+            Pattern pattern = Pattern.compile("(-)?(\\d+)");
+            Matcher matcher = pattern.matcher(delayString);
+            if (matcher.find()) {
+                delay =  matcher.group(0);
+            }
         }
         delayTextEdit.setText(delay);
 
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        main = (Main) activity;
-    }
 
     @Override
     public void onCreate (Bundle savedInstanceState){
@@ -75,7 +74,6 @@ public class OnlyOneDelayEffectConfigFragment extends Fragment implements TextWa
             effect = (Effect)arguments.getSerializable(Constants.EFFECT_STRING);
             deviceID = arguments.getString(Constants.DEVICE_ID);
         }
-        sendState();
     }
 
     @Override
@@ -122,7 +120,7 @@ public class OnlyOneDelayEffectConfigFragment extends Fragment implements TextWa
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         delay = s.toString();
-        effectConfig.put("Delay", delay);
+        effectConfig.put("Delay", delay + "ms");
         sendState();
     }
 
