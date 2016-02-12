@@ -41,7 +41,8 @@
             android:layout_toStartOf="@+id/one_color_delay_effect_config_color_button"
             android:layout_toEndOf="@+id/one_color_delay_effect_config_color_textView"
             android:layout_below="@+id/one_color_delay_effect_config_color_textView"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+        android:inputType="numberSigned"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -15,10 +15,10 @@
  */
 package club.frickel.feelathome;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,10 +30,10 @@ import android.widget.EditText;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OneColorDelayEffectConfigFragment extends Fragment implements View.OnClickListener, TextWatcher {
-    Main main;
-
 
     private int color = Color.argb(255,255,255,255);
     private String delay = "50ms";
@@ -46,40 +46,63 @@ public class OneColorDelayEffectConfigFragment extends Fragment implements View.
     Effect effect;
     Map<String, Object> effectConfig;
 
+    SendStateHandler sendStateHandler;
+
     public OneColorDelayEffectConfigFragment(){}
 
-    private void sendState() {
+    private void updateState(String delay) {
         Log.d("SendState","state sent");
 
-        if (effectConfig != null){
-            effect.setConfig(effectConfig);
+        if (sendStateHandler == null || sendStateHandler.getStatus() == AsyncTask.Status.FINISHED) {
+            this.delay = delay;
+
+
+            if (effectConfig != null){
+                effectConfig.put(Constants.DELAY, delay + "ms");
+                effect.setConfig(effectConfig);
+            }
+            sendStateHandler = new SendStateHandler(effect, deviceID, getActivity());
+            sendStateHandler.execute();
+        } else {
+            updateOneColorDelayEffectView();
         }
-        new SendStateHandler(effect, deviceID, main).execute();
     }
 
 
     public void updateOneColorDelayEffectView() {
-        effectConfig = new HashMap<>();
-        if (effect.getConfig() != null) {
-            effectConfig = effect.getConfig();
-            String colorString = effectConfig.get("Color").toString();
-            delay = effectConfig.get("Delay").toString();
-            if (colorString.length() > 0) {
-                try {
-                    this.color = Integer.parseInt(colorString.substring(1), 16) | 0xFF000000;
-                } catch (NumberFormatException e) {
 
-                }
-            }
-        }
         colorView.setBackgroundColor(color);
         delayTextEdit.setText(delay);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        main = (Main) activity;
+    private void extractStateFromBundle (Bundle savedState) {
+        if (savedState != null){
+            effect = (Effect)savedState.getSerializable(Constants.EFFECT_STRING);
+            deviceID = savedState.getString(Constants.DEVICE_ID);
+
+            if (effect.getConfig() != null) {
+                effectConfig = effect.getConfig();
+                String colorString = effectConfig.get("Color").toString();
+
+                if (colorString.length() > 0) {
+                    try {
+                        this.color = Integer.parseInt(colorString.substring(1), 16) | 0xFF000000;
+                    } catch (NumberFormatException e) {
+
+                    }
+                }
+
+                String delayString = effectConfig.get(Constants.DELAY).toString();
+
+                Pattern pattern = Pattern.compile("(-)?(\\d+)");
+                Matcher matcher = pattern.matcher(delayString);
+                if (matcher.find()) {
+                    delay =  matcher.group(0);
+                }
+            } else {
+                effectConfig = new HashMap<>();
+            }
+        }
 
     }
 
@@ -88,21 +111,16 @@ public class OneColorDelayEffectConfigFragment extends Fragment implements View.
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         if (arguments != null){
-            effect = (Effect)arguments.getSerializable(Constants.EFFECT_STRING);
-            deviceID = arguments.getString(Constants.DEVICE_ID);
+            extractStateFromBundle(arguments);
         }
-
-        sendState();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         super.onCreateView(inflater, container, savedInstanceState);
         if(savedInstanceState != null){
-            this.deviceID = savedInstanceState.getString(Constants.DEVICE_ID);
-            this.effect = (Effect)savedInstanceState.getSerializable(Constants.EFFECT_STRING);
+            extractStateFromBundle(savedInstanceState);
         }
         final View view = inflater.inflate(R.layout.one_color_delay_effect_config_layout, container, false);
 
@@ -148,7 +166,7 @@ public class OneColorDelayEffectConfigFragment extends Fragment implements View.
                 bundle.putString(Constants.DEVICE_ID, deviceID);
                 bundle.putSerializable(Constants.COLOR_PICKABLE,new ColorPickableStatic(effect));
                 colorPickerFragment.setArguments(bundle);
-                main.replaceFragmentAndAddToBackstack(colorPickerFragment);
+                ((Main)getActivity()).replaceFragmentAndAddToBackstack(colorPickerFragment);
                 break;
         }
 
@@ -167,9 +185,6 @@ public class OneColorDelayEffectConfigFragment extends Fragment implements View.
     @Override
     public void afterTextChanged(Editable s) {
         //To change body of implemented methods use File | Settings | File Templates.
-        Log.d("textchanged","changed text");
-        delay = s.toString();
-        effectConfig.put("Delay", delay);
-        sendState();
+        updateState(s.toString());
     }
 }
