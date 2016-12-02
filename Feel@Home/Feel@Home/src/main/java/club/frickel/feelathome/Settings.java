@@ -15,70 +15,52 @@
  */
 package club.frickel.feelathome;
 
-import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
+import android.preference.EditTextPreference;
+import android.preference.PreferenceFragment;
 
 
-public class Settings extends Fragment {
-
-    EditText urlEditText;
-
-    SharedPreferences sharedPreferences;
+public class Settings extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getActivity().getSharedPreferences(Constants.SHAREDPREFERENCES,Main.MODE_PRIVATE);
+        addPreferencesFromResource(R.xml.preferences);
 
+        updateSummary();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.settings, container, false);
-
-        String serverURL;
-        if (savedInstanceState != null && savedInstanceState.containsKey(Constants.SERVER_URL)){
-            serverURL = savedInstanceState.getString(Constants.SERVER_URL,null);
-        } else {
-            serverURL = sharedPreferences.getString(Constants.SERVER_URL, "");
-        }
-        if (serverURL==null) {
-            serverURL = "";
-        }
-        urlEditText = (EditText) view.findViewById(R.id.urlEditText);
-        urlEditText.setText(serverURL);
-        return view;
+    public void onResume() {
+        super.onResume();
+        getPreferenceScreen().getSharedPreferences()
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        sharedPreferences.edit().putString(Constants.SERVER_URL,urlEditText.getText().toString()).apply();
         ((Main)getActivity()).restartApplication();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putString(Constants.SERVER_URL, urlEditText.getText().toString());
-        super.onSaveInstanceState(outState);
 
+    private void updateSummary(){
+        EditTextPreference editTextPreference = (EditTextPreference) findPreference(Constants.SERVER_URL);
+        editTextPreference.setSummary(editTextPreference.getText());
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if (s.equals(Constants.SERVER_URL)){
+            updateSummary();
+        }
+
+    }
 }

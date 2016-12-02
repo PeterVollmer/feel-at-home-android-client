@@ -39,4 +39,16 @@
     <string name="fire_effect_config_cooling_textView_text">Cooling</string>
     <string name="fire_effect_config_spark_textView_text">spark</string>
     <string name="brightness_effect_config_layout_TextView_Text">Brightness</string>
+    <string name="key_server_url">ServerURL</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
 </resources>

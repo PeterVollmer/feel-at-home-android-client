@@ -16,8 +16,10 @@
 package club.frickel.feelathome;
 
 
+import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -120,7 +121,27 @@ public class DeviceListFragment extends ListFragment {
         @Override
         protected void onPostExecute(ArrayList<Device> deviceList) {
             if (deviceList == null) {
-                Toast.makeText(context, "Can't get answer from server! Wrong server?", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Can't get answer from server! Wrong server?", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                builder.setTitle(R.string.receive_error_dialog_title);
+                builder.setCancelable(false);
+                builder.setMessage(R.string.receive_error_dialog_message)
+                        .setPositiveButton(R.string.receive_error_dialog_retry, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                new PrivateDeviceHandler(getActivity().getApplicationContext()).execute();
+                            }
+                        })
+                        .setNegativeButton(R.string.receive_error_dialog_settings, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                ((Main)getActivity()).replaceFragmentAndAddToBackstack(new Settings());
+                            }
+                        });
+
+                // Create the AlertDialog object and return it
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             } else {
                 updateDeviceListFragment(deviceList);
             }
@@ -142,8 +163,6 @@ public class DeviceListFragment extends ListFragment {
         if (savedInstanceState == null){
             updateDeviceListFragment(new ArrayList<Device>());
         }
-        new PrivateDeviceHandler(getActivity().getApplicationContext()).execute();
-
         return super.onCreateView(inflater,container,savedInstanceState);
 
     }

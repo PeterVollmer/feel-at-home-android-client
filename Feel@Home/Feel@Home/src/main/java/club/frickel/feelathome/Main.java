@@ -17,7 +17,6 @@ package club.frickel.feelathome;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,8 +24,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import static java.lang.Math.max;
 
 
 public class Main extends Activity {
@@ -41,39 +38,18 @@ public class Main extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main);
-        if (savedInstanceState == null){
-            replaceFragment(new DeviceListFragment());
-        }
+        replaceFragment(new DeviceListFragment());
         appContext = getApplicationContext();
     }
 
-    public void resetApplication (){
-        FragmentManager fm = getFragmentManager();
-        int backStackCount = fm.getBackStackEntryCount();
-        if (backStackCount > 0){
-            int backStackId = fm.getBackStackEntryAt(max(backStackCount-1,0)).getId();
-            fm.popBackStack(backStackId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        } else {
-            fm.popBackStack();
-        }
-
-    }
-
     public void restartApplication (){
-        Intent intent = new Intent(getApplicationContext(), Main.class);
+        Intent intent = getIntent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        overridePendingTransition(0, 0);
         finish();
         startActivity(intent);
-
-        //finish();
+        overridePendingTransition(0, 0);
     }
-
-    /*public void resetStackFragment(Fragment fragment) {
-        FragmentManager fm = getFragmentManager();
-        for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-            fm.popBackStack();
-        }
-        replaceFragment(fragment);
-    }*/
 
     public void replaceFragment(Fragment fragment){
         getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();

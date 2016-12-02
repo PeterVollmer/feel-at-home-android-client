@@ -20,6 +20,7 @@ import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -48,7 +49,8 @@ public class DeviceFragment extends ListFragment {
         private String urlString;
 
         protected ArrayList<Effect> doInBackground(Void... params) {
-            urlString = getActivity().getSharedPreferences(Constants.SHAREDPREFERENCES, Activity.MODE_PRIVATE).getString(Constants.SERVER_URL, null);
+            urlString = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(Constants.SERVER_URL, null);
+
             if (urlString != null) {
                 try {
                     url = new URL(urlString + "/devices/" + deviceID + "/available");

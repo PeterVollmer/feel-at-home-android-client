@@ -1,10 +1,11 @@
 package club.frickel.feelathome;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -33,7 +34,10 @@ public class SendStateHandler extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... params) {
         String errorMessage = null;
         if (deviceID != null) {
-            String urlString = context.getSharedPreferences(Constants.SHAREDPREFERENCES, Activity.MODE_PRIVATE).getString(Constants.SERVER_URL, null) + "/devices/" + deviceID + "/effect";
+            String urlString = PreferenceManager.getDefaultSharedPreferences(context).getString(Constants.SERVER_URL, null);
+            if (urlString != null) {
+                urlString += "/devices/" + deviceID + "/effect";
+            }
             URL url;
 
             try {
