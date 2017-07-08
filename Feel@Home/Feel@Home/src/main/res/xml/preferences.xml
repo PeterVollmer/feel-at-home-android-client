@@ -9,5 +9,19 @@
         android:title="@string/settings_url_textview"
         android:key="@string/key_server_url"
         android:inputType="textUri" />
+    <EditTextPreference
+        android:capitalize="none"
+        android:inputType="text"
+        android:key="@string/key_username"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:title="@string/settings_username_textview" />
+    <EditTextPreference
+        android:capitalize="none"
+        android:inputType="textPassword"
+        android:key="@string/key_password"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:title="@string/settings_password_textview" />
 
 </PreferenceScreen>

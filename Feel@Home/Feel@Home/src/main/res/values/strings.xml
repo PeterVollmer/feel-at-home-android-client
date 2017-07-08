@@ -40,6 +40,10 @@
     <string name="fire_effect_config_spark_textView_text">spark</string>
     <string name="brightness_effect_config_layout_TextView_Text">Brightness</string>
     <string name="key_server_url">ServerURL</string>
+    <string name="key_username">Username</string>
+    <string name="settings_username_textview">Username</string>
+    <string name="key_password">Password</string>
+    <string name="settings_password_textview">Password</string>
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>

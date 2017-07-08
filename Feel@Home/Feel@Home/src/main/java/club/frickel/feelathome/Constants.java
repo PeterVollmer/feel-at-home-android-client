@@ -7,6 +7,8 @@ package club.frickel.feelathome;
  */
 public class Constants {
     public static final String SERVER_URL = "ServerURL";
+    public static final String USERNAME = "Username";
+    public static final String PASSWORD = "Password";
     public static final String DEVICE_ID = "deviceID" ;
     public static final String EFFECT_STRING = "effect";
     public static final String EFFECT_COLOR_PICKABLE = "effectColorPickable";

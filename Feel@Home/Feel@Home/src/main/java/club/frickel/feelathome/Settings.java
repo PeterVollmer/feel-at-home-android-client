@@ -52,13 +52,15 @@ public class Settings extends PreferenceFragment implements SharedPreferences.On
 
 
     private void updateSummary(){
-        EditTextPreference editTextPreference = (EditTextPreference) findPreference(Constants.SERVER_URL);
-        editTextPreference.setSummary(editTextPreference.getText());
+        EditTextPreference editTextServerURL = (EditTextPreference) findPreference(Constants.SERVER_URL);
+        editTextServerURL.setSummary(editTextServerURL.getText());
+        EditTextPreference editTextUsername = (EditTextPreference) findPreference(Constants.USERNAME);
+        editTextUsername.setSummary(editTextUsername.getText());
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if (s.equals(Constants.SERVER_URL)){
+        if (s.equals(Constants.SERVER_URL) || s.equals(Constants.USERNAME)){
             updateSummary();
         }
 

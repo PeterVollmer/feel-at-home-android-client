@@ -17,18 +17,19 @@ package club.frickel.feelathome;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+
 
 public class Main extends Activity {
-
-    public Context appContext;
 
     /**
      * Called when the activity is first created.
@@ -36,10 +37,20 @@ public class Main extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final String username = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.USERNAME, "username");
+        final String password = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.PASSWORD, "password");
 
+        Authenticator.setDefault(new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password.toCharArray());
+            }
+        });
         setContentView(R.layout.main);
-        replaceFragment(new DeviceListFragment());
-        appContext = getApplicationContext();
+        if (savedInstanceState == null){
+            replaceFragment(new DeviceListFragment());
+        }
+
+
     }
 
     public void restartApplication (){
@@ -65,7 +76,7 @@ public class Main extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuitem_about:
-                Toast.makeText(appContext, "about", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "about", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.menuitem_settings:
                 replaceFragmentAndAddToBackstack(new Settings());
