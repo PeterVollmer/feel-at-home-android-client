@@ -34,7 +34,8 @@ import java.util.ArrayList;
 
 public class DeviceListFragment extends ListFragment {
     ObjectMapper mapper;
-
+    AlertDialog serverNotAvailDialog = null;
+    boolean serverNotAvailDialogWasOn = false;
 
     private class DeviceArrayAdapter extends ArrayAdapter<Device> {
 
@@ -122,26 +123,14 @@ public class DeviceListFragment extends ListFragment {
         protected void onPostExecute(ArrayList<Device> deviceList) {
             if (deviceList == null) {
                 //Toast.makeText(context, "Can't get answer from server! Wrong server?", Toast.LENGTH_SHORT).show();
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                try {
+                    context = getActivity();
+                } catch (NullPointerException e){
+                    return;
+                }
+                serverNotAvailDialog = createServerNotAvailableErrorDialog(context);
+                serverNotAvailDialog.show();
 
-                builder.setTitle(R.string.receive_error_dialog_title);
-                builder.setCancelable(false);
-                builder.setMessage(R.string.receive_error_dialog_message)
-                        .setPositiveButton(R.string.receive_error_dialog_retry, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                new PrivateDeviceHandler(getActivity().getApplicationContext()).execute();
-                            }
-                        })
-                        .setNegativeButton(R.string.receive_error_dialog_settings, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                ((Main)getActivity()).replaceFragmentAndAddToBackstack(new Settings());
-                            }
-                        });
-
-                // Create the AlertDialog object and return it
-
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
             } else {
                 updateDeviceListFragment(deviceList);
             }
@@ -158,6 +147,28 @@ public class DeviceListFragment extends ListFragment {
 
     }
 
+    private AlertDialog createServerNotAvailableErrorDialog(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setTitle(R.string.receive_error_dialog_title);
+        builder.setCancelable(false);
+        builder.setMessage(R.string.receive_error_dialog_message)
+                .setPositiveButton(R.string.receive_error_dialog_retry, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        new PrivateDeviceHandler(getActivity().getApplicationContext()).execute();
+                    }
+                })
+                .setNegativeButton(R.string.receive_error_dialog_settings, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ((Main) getActivity()).replaceFragmentAndAddToBackstack(new Settings());
+                    }
+                });
+
+        // Create the AlertDialog object and return it
+
+        return builder.create();
+    }
+
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         if (savedInstanceState == null){
@@ -168,9 +179,24 @@ public class DeviceListFragment extends ListFragment {
     }
 
     @Override
+    public void onStop(){
+        super.onStop();
+        if (serverNotAvailDialog != null){
+            serverNotAvailDialog.cancel();
+            serverNotAvailDialogWasOn = true;
+        }
+    }
+
+
+    @Override
     public void onResume(){
         super.onResume();
-        new PrivateDeviceHandler(getActivity().getApplicationContext()).execute();
+        if (serverNotAvailDialogWasOn){
+            serverNotAvailDialog = createServerNotAvailableErrorDialog(getActivity());
+            serverNotAvailDialog.show();
+        } else {
+            new PrivateDeviceHandler(getActivity().getApplicationContext()).execute();
+        }
     }
 
 
