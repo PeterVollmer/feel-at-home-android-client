@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="club.frickel.feelathome"
-   >
+    package="club.frickel.feelathome">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/logo"
-        android:label="@string/app_name"
-        android:allowBackup="true">
-        <activity
-            android:name="club.frickel.feelathome.Main"
-            android:label="@string/app_name">
-            <!--android:screenOrientation="portrait">-->
+        android:label="@string/app_name">
+
+        <activity android:name=".Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <receiver android:enabled="true" android:name="club.frickel.feelathome.PowerIntent" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.ALTERNATIVE" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

@@ -1,0 +1,30 @@
+package club.frickel.feelathome
+
+object Constants {
+    val SERVER_URL = "ServerURL"
+    val USERNAME = "Username"
+    val PASSWORD = "Password"
+    val DEVICE_ID = "deviceID"
+    val EFFECT_STRING = "effect"
+    val EFFECT_COLOR_PICKABLE = "effectColorPickable"
+    val SHAREDPREFERENCES = "feelathome"
+
+    val PACKAGE_NAME = "club.frickel.feelathome"
+    val TAG = "feelathome"
+    val INTENT_EXTRA_WIDGET_TEXT = "INTENT_EXTRA_WIDGET TEXT"
+    val ACTION_WIDGET_UPDATE_FROM_ACTIVITY = "ACTION_WIDGET_UPDATE_FROM_ACTIVITY"
+    val ACTION_WIDGET_UPDATE_FROM_ALARM = "ACTION_WIDGET_UPDATE_FROM_ALARM"
+    val ACTION_WIDGET_UPDATE_FROM_WIDGET = "ACTION_WIDGET_UPDATE_FROM_WIDGET"
+    val EXTRA_SET_ACTIVE = "extraSetActive"
+    val IMAGEVIEW = "imageview"
+    val SPREF_DEVICE_ID = "deviceID"
+    val SPREF_SET_ACTIVE = "setActive"
+    val ACTION_POWER_INTENT = "POWERINTENT"
+    val SHARED_DEVICE_ID = "sharedDeviceID"
+    val SHARED_SET_ACTIVE = "sharedSetActive"
+    val COLOR_PICKABLE = "colorPickable"
+    val BRIGHTNESS = "Brightness"
+    val COOLING = "Cooling"
+    val SPARK = "Spark"
+    val DELAY = "Delay"
+}
